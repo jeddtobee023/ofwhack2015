@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>OFW Hack 2015</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" >
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+	  <link rel="stylesheet" href="css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/animate.min.css">
+      <style>
+         .navbar
+		 {
+		 -webkit-transition: all ease-in-out 0.25s;
+		 transition: all ease-in-out 0.25s;
+		 }
+		 .navbar-fixed-top .row
+		 {
+		 margin:0;
+		 padding:0;
+		 }
+		 .menu-top
+		 {
+		 padding:0;
+		 padding-top:10px;
+		 background:#333;
+		 }
+		 .menu-top .col-xs-3
+		 {
+		 padding:0;
+		 padding-bottom:5px;
+		 color:#b4bcc2;
+		 text-decoration: none;
+		 text-align: center;
+		 font-size: 0.9em
+		 }
+		 .menu-top .active
+		 {
+		 border-bottom: 5px solid #3498db;
+		 color: #f3f3f3;
+		 }
+      </style>
+   </head>
+   <body>
+		<div class="navbar navbar-fixed-top" style="background: #f3f3f3;color:#333">
+			<div class="container-fluid" style="padding: 10px;">
+			<div class="row">
+			  <div class="col-xs-6" style="padding:0">
+			  <h4><i class="fa fa-info fa-lg fa-fw"></i>About</h4>
+			  </div>
+			  <div class="col-xs-6 text-right" style="padding:0">
+			  <h4><i class="fa fa-search fa-lg fa-fw"></i></h4>
+			  </div>
+			</div>
+			</div>
+			<div class="container-fluid menu-top">
+			<div class="row">
+			  <a href="" class="col-xs-3 active">
+			  <i class="fa fa-th-large fa-lg fa-fw"></i><br>Collections
+			  </a>
+			  <div class="col-xs-3">
+			  <i class="fa fa-star fa-lg fa-fw"></i><br>Featured
+			  </div>
+			  <div class="col-xs-3">
+			  <i class="fa fa-bar-chart fa-lg fa-fw"></i><br>Trending
+			  </div>
+			  <div class="col-xs-3">
+			  <i class="fa fa-trophy fa-lg fa-fw"></i><br>All Time
+			  </div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="container-fluid" style="padding-top:130px;padding-bottom: 50px;">
+		<div class="center-block" style="max-width:700px;">
+		<button id="testNoti" class="btn btn-info btn-lg btn-block">Test Notification</button>
+		</div><!--center-block-->
+		</div><!--container-fluid-->
+      <script src="js/jquery-1.11.2.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+	  <script src="js/fastclick.min.js"></script>
+	  <script>
+		$("#testNoti").click(showNotification);
+	  </script>
+   </body>
+</html>
