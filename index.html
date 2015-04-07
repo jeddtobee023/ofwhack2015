@@ -11,7 +11,8 @@
 		body
 		{
 		background: #d3d3d3;
-		padding-top:115px;
+		padding-top:125px;
+		padding-bottom: 50px;
 		}
          .navbar
 		 {
@@ -48,6 +49,12 @@
 		 -webkit-animation-duration: 0.55s;
 		 animation-duration: 0.55s;
 		 }
+		 .list-group-notifications .list-group-item
+		 {
+		 border-left: 0;
+		 border-right: 0;
+		 border-radius:0;
+		 }
       </style>
    </head>
    <body>
@@ -55,10 +62,10 @@
 			<div class="container-fluid" style="padding: 10px;">
 				<div class="row">
 				  <div class="col-xs-6" style="padding:0">
-				  <h4><i class="fa fa-info fa-lg fa-fw"></i>About</h4>
+				  <img src="images/ihlogo-alt.png" style="width:42px">
 				  </div>
 				  <div class="col-xs-6 text-right" style="padding:0">
-				  <h4><i class="fa fa-search fa-lg fa-fw"></i></h4>
+				  <h4><span class="glyphicon glyphicon-option-vertical"></span></h4>
 				  </div>
 				</div>
 			</div>
@@ -79,16 +86,16 @@
 				</div>
 			</div>
 		</div>
-		<div style="background: transparent;padding:0;position:fixed;right:0;top:88%;z-index:1030;">
-		<span class="fa-stack fa-2x">
-		  <i class="fa fa-circle fa-stack-2x" style="color: #333"></i>
-		  <i class="fa fa-flag fa-stack-1x fa-inverse"></i>
-		</span>
+		<div style="background: transparent;padding:0;position:fixed;right:0;top:80%;z-index:1030;padding-right: 5px">
+		<a href="panicbutton.html" class="fa-stack fa-2x img-circle btn-up"style="background:#333;-webkit-box-shadow:0px 0px 2px 2px rgba(0,0,0,0.8);box-shadow:0px 0px 2px 2px rgba(0,0,0,0.8)">
+		  <i class="fa fa-stack-2x img-circle"></i>
+		  <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+		</a>
 		</div>
 		
-		<div class="container-fluid" style="padding-bottom: 50px;padding-top:10px;">
+		<div class="container" style="padding-left:0;padding-right:0;">
 		<div class="center-block" style="max-width:700px;">
-		<div class="list-group" style="margin-top:0;margin-left: -22px;margin-right:-22px;">
+		<div class="list-group list-group-notifications">
 		
 		<div class="list-group-item list-group-item-danger">
 			<span class="label label-default pull-right">2 minutes ago</span>
@@ -120,12 +127,12 @@
 			From: Mama - Dad, When will you come home? We will having...
 			<span class="clearfix"></span>
 		</div>
-		<div class="list-group-item active">
+		<div class="list-group-item  list-group-item-success" style="background: #333">
 			<span class="label label-default pull-right">Reminder</span>
-			<span class="fa-stack fa-3x pull-left">
-			  <i class="fa fa-circle fa-stack-2x text-warning"></i>
+			<a href="" class="fa-stack fa-3x pull-left btn-forward">
+			  <i class="fa fa-circle fa-stack-2x text-danger"></i>
 			  <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
-			</span>
+			</a>
 			<h3>Reginald's Birthday Today!</h3>
 			Call or Message Reginald now.
 			<span class="clearfix"></span>
@@ -135,14 +142,22 @@
 		</div>
 		
 		</div>
+		</div><!--center-block-->
+		</div><!--container-fluid-->
+		
+		<div class="container">
+		<div class="center-block" style="max-width:700px;">
 		<a href="test2.html" class="btn btn-info btn-forward">Next Page</a>
+		<svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
+		   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+		</svg>
 		</div><!--center-block-->
 		</div><!--container-fluid-->
       <script src="js/jquery-1.11.2.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
 	  <script src="js/fastclick.min.js"></script>
 	  <script>
-		$("#testNoti").click(function(){
+	  $("#testNoti").click(function(){
 		alert("If you see this, either there's an error or notifications hasn't been loaded");
 		});
 	  </script>

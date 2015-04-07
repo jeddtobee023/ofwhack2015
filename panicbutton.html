@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>OFW Hack 2015</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" >
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+	  <link rel="stylesheet" href="css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/animate.min.css">
+      <style>
+		body
+		{
+		padding-top:125px;
+		padding-bottom: 50px;
+		-webkit-transition: background 0.35s ease-in-out;
+		transition: background 0.35s ease-in-out;
+		}
+        .navbar-fixed-top .row
+		 {
+		 margin:0;
+		 padding:0;
+		 }
+		 .animated
+		 {
+		 -webkit-animation-duration: 0.55s;
+		 animation-duration: 0.55s;
+		 }
+      </style>
+   </head>
+   <body class="bg-info">
+		<div class="navbar navbar-fixed-top" style="color:#fff">
+			<div class="container-fluid" style="padding: 10px;">
+				<h4><a href="index.html" class="btn-down" style="color:#fff"><i class="fa fa-times fa-lg"></i></a></h4>
+			</div>
+		</div>
+		<div style="background: transparent;padding:0;position:fixed;left:0;top:60%;z-index:1030;width:100%">
+		<div class="text-center">
+		<span id="panicbutton" class="fa-stack fa-5x img-circle fa-fw"style="background:#333;">
+		  <i class="fa fa-stack-2x img-circle"></i>
+		  <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+		</span>
+		</div>
+		</div>
+				
+		<div class="container">
+		<div class="center-block" style="max-width:700px;color:#fff;">
+		<h1 id="panicinstruction" class="text-center">Press the panic button for 3 seconds.<br><i class="fa fa-arrow-down fa-lg" style="margin-top:20px"></i></h1>
+		<div id="panicloading" style="display:none"><svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
+		   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30" style="stroke:#fff"></circle>
+		</svg></div>
+		<!--<svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
+		   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+		</svg>-->
+		</div><!--center-block-->
+		</div><!--container-fluid-->
+      <script src="js/jquery-1.11.2.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+	  <script src="js/fastclick.min.js"></script>
+	  <script>
+	    $(function()
+		{
+		//$("body").removeClass("bg-info").addClass("bg-danger");
+		});
+		var panicDown;
+		$('#panicbutton').on("mousedown touchstart",function() {
+		  panicDown = setTimeout(function() {
+			$("body").removeClass("bg-info").addClass("bg-danger"); 
+			$("#panicinstruction").slideUp("fast");
+			$("#panicloading").slideDown("fast");
+		  }, 2000);
+		});
+		$('#panicbutton').on("mouseup touchend",function() {
+		  if (panicDown) {
+			clearTimeout(panicDown);
+		  }
+		});
+	  </script>
+   </body>
+</html>
