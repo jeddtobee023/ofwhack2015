@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.gcccs.org.imhome" version="1.0">
 
-	<name>I'M HOME</name>
+	<name>I'm Home</name>
 	<description>Entry - Global Pinoy Hackathon 2015</description>
 	<author>Team GC-CCS</author>
 	<gap:platforms>
