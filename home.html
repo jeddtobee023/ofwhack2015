@@ -92,7 +92,12 @@
 		<div class="container" style="padding-left:0;padding-right:0;">
 		<div class="center-block" style="max-width:700px;">
 				<div class="list-group list-group-notifications">
-				
+				<div id="notilistloader" class="list-group-item">
+					<svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
+					<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+					</svg
+				</div>
+				<!--
 				<div class="list-group-item list-group-item-danger">
 					<span class="label label-default pull-right">2 minutes ago</span>
 					<span class="fa-stack fa-3x pull-left">
@@ -136,7 +141,7 @@
 				<div class="list-group-item list-group-item-danger">
 					<button id="testNoti" class="btn btn-info btn-lg btn-block">Test Notification</button>
 				</div>
-
+				-->
 				</div>
 		</div><!--center-block-->
 		</div><!--container-fluid-->
@@ -145,14 +150,67 @@
       <script src="js/jquery-1.11.2.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
 	  <script src="js/fastclick.min.js"></script>
+	  <script src="js/jquery.timeago.js"></script>
 	  <script>
+	  var notitimer;
 	  $(function()
 	  {
 	  $("body").fadeIn("fast");
+	  $("abbr.timeago").timeago();
+	  localStorage.removeItem("imhome-lastnotidate");
+	  setTimeout(function()
+	  {
+		 $.getJSON("http://imhome.iligtas.ph/getnotifications.php", {uniquekey:localStorage.getItem("imhome-uniquekey")},function(data)
+         		{
+					var itemtype =" ";
+					//$(".list-group-notifications").empty();
+					$.each(data, function(key, value) {
+					if (value['type'] == "pb")
+					{
+					$(".list-group-notifications").prepend('<div class="list-group-item list-group-item-danger" style="display:none"><abbr class="label label-default pull-right timeago" title="'+value['notidate']+'">'+value['notidate']+'</abbr><span class="fa-stack fa-3x pull-left"><i class="fa fa-circle fa-stack-2x" style="color: #333"></i><i class="fa fa-flag fa-stack-1x fa-inverse"></i></span><h3>'+value['alias']+' needs Emergency!</h3>'+value['alias']+' pushed the Panic Button<span class="clearfix"></span></div>');
+					}
+					if (key >= data.length - 1)
+					{
+					 localStorage.setItem("imhome-lastnotidate",value['notidate']);
+					}
+					$("abbr.timeago").timeago();
+					$(".list-group-item").slideDown("fast");
+					});
+					$("#notilistloader").slideUp();
+				}).fail(function(){
+				
+				});
+		notitimer = setInterval(function()
+		{
+			if(localStorage.getItem("imhome-lastnotidate") != undefined || localStorage.getItem("imhome-lastnotidate") != null)
+			{
+				$.getJSON("http://imhome.iligtas.ph/getnotifications.php", {uniquekey:localStorage.getItem("imhome-uniquekey"), offsetdate: localStorage.getItem("imhome-lastnotidate")},function(data)
+         		{
+					var itemtype =" ";
+					//$(".list-group-notifications").empty();
+					$.each(data, function(key, value) {
+					if (value['type'] == "pb")
+					{
+					$(".list-group-notifications").prepend('<div class="list-group-item list-group-item-danger" style="display:none"><abbr class="label label-default pull-right timeago" title="'+value['notidate']+'">'+value['notidate']+'</abbr><span class="fa-stack fa-3x pull-left"><i class="fa fa-circle fa-stack-2x" style="color: #333"></i><i class="fa fa-flag fa-stack-1x fa-inverse"></i></span><h3>'+value['alias']+' needs Emergency!</h3>'+value['alias']+' pressed the Panic Button<span class="clearfix"></span></div>');
+					$("body").trigger("notifyandroid",[value['alias']+' needs Emergency!',value['alias']+' pressed the Panic Button']);
+					}
+					if (key >= data.length - 1)
+					{
+					 localStorage.setItem("imhome-lastnotidate",value['notidate']);
+					}
+					$("abbr.timeago").timeago();
+					$(".list-group-item").slideDown("fast");
+					});
+					$("#notilistloader").slideUp();
+				});
+			}
+		},15000);
+	  },500);
 	  });
 	  $("#testNoti").click(function(){
 		alert("If you see this, either there's an error or notifications hasn't been loaded");
-		});
+	  });
+	  
 	  </script>
    </body>
 </html>

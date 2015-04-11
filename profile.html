@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>OFW Hack 2015</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" >
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+	  <link rel="stylesheet" href="css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/animate.min.css">
+      <style>
+		body
+		{
+		background: #d3d3d3;
+		padding-top:135px;
+		padding-bottom: 5px;
+		display:none;
+		}
+		 .navbar-fixed-top .row
+		 {
+		 margin:0;
+		 padding:0;
+		 }
+		 .menu-top
+		 {
+		 padding:0;
+		 padding-top:10px;
+		 background:#333;
+		 }
+		 .menu-top .col-xs-3
+		 {
+		 padding:0;
+		 padding-bottom:5px;
+		 color:#b4bcc2;
+		 text-decoration: none;
+		 text-align: center;
+		 font-size: 0.9em;
+		 }
+		 .menu-top .active
+		 {
+		 border-bottom: 5px solid #3498db;
+		 color: #f3f3f3;
+		 }
+		 .animated
+		 {
+		 -webkit-animation-duration: 0.55s;
+		 animation-duration: 0.55s;
+		 }
+      </style>
+   </head>
+   <body>
+		<div class="navbar navbar-fixed-top" style="background: #f3f3f3;color:#333">
+			<div class="container-fluid" style="padding: 10px;">
+				<div class="row">
+				  <div class="col-xs-6" style="padding:0">
+				  <img src="images/ihlogo-alt.png" style="width:42px">
+				  </div>
+				  <div class="col-xs-6 text-right" style="padding:0">
+				  <h4><i class="fa fa-refresh fa-lg"></i></h4>
+				  </div>
+				</div>
+			</div>
+			<div class="container-fluid menu-top">
+				<div class="row">
+				  <a href="home.html" class="col-xs-3 tab-btn">
+				  <i class="fa fa-th-large fa-lg fa-fw"></i><br>Notifications
+				  </a>
+				  <a href="tracklist.html" class="col-xs-3 tab-btn">
+				  <i class="fa fa-map-marker fa-lg fa-fw"></i><br>Tracklist
+				  </a>
+				  <a href="messages.html" class="col-xs-3 tab-btn">
+				  <i class="fa fa-envelope fa-lg fa-fw"></i><br>Messages
+				  </a>
+				  <a href="profile.html" class="col-xs-3 active  tab-btn">
+				  <i class="fa fa-user fa-lg fa-fw"></i><br>Profile
+				  </a>
+				</div>
+			</div>
+		</div>
+		<div class="btn-context">
+		<a href="panicbutton.html" class="fa-stack fa-2x img-circle btn-up"style="background:#333;-webkit-box-shadow:0px 0px 2px 2px rgba(0,0,0,0.6);box-shadow:0px 0px 2px 2px rgba(0,0,0,0.6)">
+		  <i class="fa fa-stack-2x img-circle"></i>
+		  <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+		</a>
+		</div>
+		
+		<div class="container">
+		<div class="center-block" style="max-width:700px;">
+				<button id="btnlogout" class="btn btn-default btn-block"><i class="fa fa-lock fa-fw"></i>Log-out</button>
+		</div><!--center-block-->
+		</div><!--container-fluid-->
+		
+		<!--- Error Modal Start -->
+      <div class="modal fade" id="errormodal" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog modal-vertical-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4 id="popuptitle" class="modal-title"></h4>
+               </div>
+               <div class="modal-body">
+                  <p id="popuptext"></p>
+				  <div id="footercontent"></div>
+				  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--- Error Modal End -->
+		
+      <script src="js/jquery-1.11.2.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+	  <script src="js/fastclick.min.js"></script>
+	  <script>
+	  $(function()
+	  {
+	   $("body").fadeIn("fast");
+	  });
+	  $("#btnlogout").click(function()
+	  {
+	  localStorage.removeItem("imhome-email");
+	  localStorage.removeItem("imhome-uniquekey");
+	  localStorage.removeItem("imhome-lastnotidate");
+	  $("body").trigger("transitionandroid",["login.html","down"]);
+	  });
+	  </script>
+   </body>
+</html>
