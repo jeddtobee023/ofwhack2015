@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>OFW Hack 2015</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" >
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+	  <link rel="stylesheet" href="css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/animate.min.css">
+      <style>
+		body
+		{
+		background: #d3d3d3;
+		padding-top:135px;
+		padding-bottom: 5px;
+		display:none;
+		}
+		 .navbar-fixed-top .row
+		 {
+		 margin:0;
+		 padding:0;
+		 }
+		 .menu-top
+		 {
+		 padding:0;
+		 padding-top:10px;
+		 background:#333;
+		 }
+		 .menu-top .col-xs-3
+		 {
+		 padding:0;
+		 padding-bottom:5px;
+		 color:#b4bcc2;
+		 text-decoration: none;
+		 text-align: center;
+		 font-size: 0.9em;
+		 }
+		 .menu-top .active
+		 {
+		 border-bottom: 5px solid #3498db;
+		 color: #f3f3f3;
+		 }
+		 .animated
+		 {
+		 -webkit-animation-duration: 0.55s;
+		 animation-duration: 0.55s;
+		 }
+      </style>
+   </head>
+   <body>
+		<div class="navbar navbar-fixed-top" style="background: #f3f3f3;color:#333">
+			<div class="container-fluid" style="padding: 10px;">
+				<div class="row">
+				  <div class="col-xs-6" style="padding:0">
+				  <img src="images/ihlogo-alt.png" style="width:42px">
+				  </div>
+				  <div class="col-xs-6 text-right" style="padding:0">
+				  <h4><i class="fa fa-refresh fa-lg"></i></h4>
+				  </div>
+				</div>
+			</div>
+			<div class="container-fluid menu-top">
+				<div class="row">
+				  <a href="home.html" class="col-xs-3 tab-btn">
+				  <i class="fa fa-th-large fa-lg fa-fw"></i><br>Notifications
+				  </a>
+				  <a href="tracklist.html" class="col-xs-3 active tab-btn">
+				  <i class="fa fa-map-marker fa-lg fa-fw"></i><br>Tracklist
+				  </a>
+				  <a href="messages.html" class="col-xs-3 tab-btn">
+				  <i class="fa fa-envelope fa-lg fa-fw"></i><br>Messages
+				  </a>
+				  <a href="profile.html" class="col-xs-3 tab-btn">
+				  <i class="fa fa-user fa-lg fa-fw"></i><br>Profile
+				  </a>
+				</div>
+			</div>
+		</div>
+		<div class="btn-context">
+		<a href="panicbutton.html" class="fa-stack fa-2x img-circle btn-up"style="background:#333;-webkit-box-shadow:0px 0px 2px 2px rgba(0,0,0,0.6);box-shadow:0px 0px 2px 2px rgba(0,0,0,0.6)">
+		  <i class="fa fa-stack-2x img-circle"></i>
+		  <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+		</a>
+		</div>
+		
+		<div class="container">
+		<div class="center-block" style="max-width:700px;">
+				<div class="panel panel-primary">
+					  <div class="panel-heading">Add to your Track List:</div>
+					  <div class="panel-body">
+							<form id="addtotracklistform" action="javascript:addtotracklist()">
+								<b>Enter Unique Key:</b>
+								<input type="number" class="form-control" name="foruniquekey" min="10000000" max="99999999" required style="margin-bottom:5px">
+								<b>Your Relationship with this Person:</b>
+								<select class="form-control" name="relationship">
+									<optgroup label="Family">
+									<option>Spouse</option>
+									<option>Son</option>
+									<option>Daughter</option>
+									<option>Mother</option>
+									<option>Father</option>
+									<option>Cousin</option>
+									<option>Niece</option>
+									<option>Nephew</option>
+									<option>Aunt</option>
+									<option>Uncle</option>
+									<option>Grandmother</option>
+									<option>Grandfather</option>
+									</optgroup>
+									<optgroup label="Friends">
+									<option>BFFs</option>
+									<option>Closed Friends</option>
+									<option>Acquaintance</option>
+									</optgroup>
+									<optgroup label="Co-OFW">
+									<option>Co-Worker</option>
+									<option>Co-Agency</option>
+									<option>Co-Location</option>
+									 </optgroup>
+								</select>
+								<input type="text" name="byuniquekey" id="txtbyuniquekey" style="opacity:0;width:1px">
+								<div class="text-right">
+								<button type="submit" class="btn btn-info"><i class="fa fa-plus fa-lg fa-fw"></i>Add to Track List</button>
+								</div>
+							</form>
+							
+					  </div>
+				</div>
+				<div class="panel panel-primary">
+					  <div class="panel-heading">Your Track List:</div>
+					  <div id="tracklistgroup" class="list-group">
+							<div id="tracklistloader" class="list-group-item">
+							<svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
+							<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+							</div>
+					  </div>
+				</div>
+		</div><!--center-block-->
+		</div><!--container-fluid-->
+		
+		<!--- Error Modal Start -->
+      <div class="modal fade" id="errormodal" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog modal-vertical-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4 id="popuptitle" class="modal-title"></h4>
+               </div>
+               <div class="modal-body">
+                  <p id="popuptext"></p>
+				  <div id="footercontent"></div>
+				  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--- Error Modal End -->
+		
+      <script src="js/jquery-1.11.2.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+	  <script src="js/fastclick.min.js"></script>
+	  <script>
+	  $(function()
+	  {
+	  $("#txtbyuniquekey").val(localStorage.getItem("imhome-uniquekey"));
+	  $("body").fadeIn("fast");
+	  setTimeout(function()
+	  {
+		 $.getJSON("http://imhome.iligtas.ph/gettracklistfromuser.php", {uniquekey:localStorage.getItem("imhome-uniquekey")},function(data)
+         		{
+					$("#tracklistloader").remove();
+					var tracklistinfo = "";
+					$.each(data, function(key, value) {
+					$("#tracklistgroup").append('<div class="list-group-item"><span class="label label-default pull-right" style="font-size:0.8em;">'+value['uniquekey']+'</span>&nbsp;&nbsp;'+value['alias']+' - <b>Your '+value['relationship']+'</b><span class="clearfix"></span></div>');
+					});					
+				}).fail(function(){
+					$("#tracklistloader").remove();
+					$("#tracklistgroup").append('<div class="list-group-item text-center">Unable to load the Tracklist.</div>');
+				});
+	  },500);
+	  });
+	  
+	  var aform = $("#addtotracklistform");
+	  function addtotracklist()
+	  {
+	  $('#loadingmodal').modal({backdrop: "static",keyboard: false},'show');
+	  $.getJSON("http://imhome.iligtas.ph/addtotracklist.php", aform.serialize(),function(data)
+         		{
+						if (data.statuscode == "ta")
+         				{
+						$('#loadingmodal').modal("hide");
+						
+         				$("#popuptitle").html("Successfully!");
+         				$("#popuptext").html("Sucessfully added to tracklist.");
+						$("#footercontent").html('<a href="tracklist.html" class="btn btn-info tab-btn pull-right">OK</a>');
+         				$('#errormodal').modal({backdrop: "static",keyboard: false},'show');
+         				}
+         				else
+         				{
+         				$('#loadingmodal').modal("hide");
+         				$("#popuptitle").html("Unable to Add to Track List");
+         				$("#popuptext").html("The account you've entered may not be associated with I'M HOME. Please check the entered unique key.");
+						$("#footercontent").html('<button data-dismiss="modal" class="btn btn-info pull-right">OK</button>');
+         				$('#errormodal').modal('show');
+         				}
+				}).fail(function(data){
+         				$('#loadingmodal').modal("hide");
+         				$("#popuptitle").html("Unable to Add to Track List");
+         				$("#popuptext").html("There is a problem with adding to the tracklist, please try again later.");						
+						$("#footercontent").html('<button data-dismiss="modal" class="btn btn-info pull-right">OK</button>');
+         				$('#errormodal').modal('show');
+         			});
+	  }
+	  </script>
+   </body>
+</html>

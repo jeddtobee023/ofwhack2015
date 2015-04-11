@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>OFW Hack 2015</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" >
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+	  <link rel="stylesheet" href="css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/animate.min.css">
+      <style>
+		body
+		{
+		background: #d3d3d3;
+		padding-top:75px;
+		padding-bottom: 50px;
+		}
+		 .navbar-fixed-top .row
+		 {
+		 margin:0;
+		 padding:0;
+		 }
+		 .animated
+		 {
+		 -webkit-animation-duration: 0.55s;
+		 animation-duration: 0.55s;
+		 }
+      </style>
+   </head>
+   <body class="bg-success">
+		<div class="navbar navbar-fixed-top" style="background: #f3f3f3;color:#333">
+			<div class="container-fluid" style="padding: 10px;">
+				<div class="row">
+				  <div class="col-xs-8" style="padding:0">
+				  <h4><a href="login.html" class="btn-reverse" style="color:#333"><i class="fa fa-arrow-left fa-lg"></i></a>&nbsp;Account Registration</h4>
+				  </div>
+				  <div class="col-xs-4 text-right" style="padding:0"> </div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container">
+		<div class="center-block" style="max-width:700px;">
+		<div class="panel panel-default">
+			<div class="panel-body">
+			<small>* indicates required fields</small>
+			<form id="signupform" action="javascript:registeruser();">
+				<b>Full Name*:</b>
+				<input type="text" class="form-control" name="fullname" id="fullname" maxlength="150">
+				<small id="errorfullname" style="color:#ff0000;display:block"></small>
+				<b>E-Mail*:</b>
+                <input type="email"  class="form-control" name="email" id="email" maxlength="50">
+                <small id="erroremail" style="color:#ff0000;display:block"></small>
+				<b>Password*:</b>
+                <small style="color:#2373a5"><br>8-15 Characters, Alphanumeric Characters</small>
+                <input type="password" class="form-control" name="pass" id="pass" maxlength="15">
+                <small id="errorpass" style="color:#ff0000;display:block"></small>
+                <b>Confirm Password*:</b>
+                <input type="password" class="form-control" name="cpass" id="cpass" maxlength="15">
+                <small id="errorcpass" style="color:#ff0000;display:block"></small>
+			<br>
+			<div class="text-right">
+			<button type="submit" class="btn btn-warning"><i class="fa fa-check fa-fw fa-lg"></i>Submit</button>
+			</div>
+			</form>
+			
+			</div>
+		</div>
+		
+		</div><!--center-block-->
+		</div><!--container-fluid-->
+		
+		<!--- Error Modal Start -->
+      <div class="modal fade" id="errormodal" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog modal-vertical-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4 id="popuptitle" class="modal-title"></h4>
+               </div>
+               <div class="modal-body">
+                  <p id="popuptext"></p>
+				  <div id="footercontent"></div>
+				  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--- Error Modal End -->
+
+      <script src="js/jquery-1.11.2.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+	  <script src="js/fastclick.min.js"></script>
+	  <script src="js/jquery.validate.js"></script>
+	  <script>
+	  var form = $("#signupform");
+         form.validate({
+         				errorPlacement: function ($error, $element) {
+         					var name = $element.attr("name");
+         					$("#error" + name).html($error);
+         				},
+         				rules: {
+         					fullname: {
+         						required: true,
+         						minlength: 1
+         					},
+         					email: {
+         						required: true,
+         						email: true
+         					},
+         					username: {
+         						required: true,
+         						minlength: 8
+         					},
+         					pass: {
+         						required: true,
+         						minlength: 8
+         					},
+         					cpass: {
+         						required: true,
+         						minlength: 8,
+         						equalTo: "#pass"
+         					}
+         				},
+         				messages: {
+         					fullname: {
+         						required: "Please enter your Full Name"
+         					},
+         					email: "Please enter a valid email address",
+         					username: {
+         						required: "Please enter a valid username",
+         						minlength: "Your username must be at least 8 characters long"
+         					},
+         					pass: {
+         						required: "Please provide a password",
+         						minlength: "Your password must be at least 8 characters long"
+         					},
+         					cpass: {
+         						required: "Please provide a password",
+         						minlength: "Your password must be at least 8 characters long",
+         						equalTo: "Passwords does not match"
+         					}
+         				}
+         		});
+			function registeruser()
+         		{
+         		//checks if form is valid
+				if(form.valid)
+					{
+					$('#loadingmodal').modal({backdrop: "static",keyboard: false},'show');
+					$.getJSON("http://imhome.iligtas.ph/checkaccount.php", form.serialize() ,function(data)
+         				{
+							if(data.accountexists =="pe")
+							{
+							$("body").scrollTop($("#email").offset().top);
+							$("#erroremail").text("");
+							$("#erroremail").append("E-mail <b>"+ data.email + "</b> is already in use, use another e-mail<br>");
+							$('#loadingmodal').modal("hide");
+							return;
+							}
+							else
+							{
+							$.getJSON("http://imhome.iligtas.ph/uregister.php", form.serialize(),function(data)
+								{
+									$('#loadingmodal').modal('hide');
+									$("#popuptitle").html("Success!");
+									$("#popuptext").html('<b>Registration Complete!</b><br>Your Unique Key is:<h2 style="margin-top:2px"><span class="label label-default">'+data.uniquekey+'</span></h2><h6>Keep this Unique Key. This will be used as a reference of your trackers.</h6>');
+									$("#footercontent").html('<a href="login.html" class="btn btn-info btn-reverse pull-right">OK</a>');
+									$('#errormodal').modal('show');
+									return;
+								}).fail(function(data){ 
+									$('#loadingmodal').modal('hide');
+									$("#popuptitle").html("Oh No!");
+									$("#popuptext").html("Registration Failed!");
+									$("#footercontent").html('<button data-dismiss="modal" class="btn btn-info pull-right">OK</button>');
+									$('#errormodal').modal('show');
+									return;
+								});
+							}
+						}).fail(function(data){
+						$('#loadingmodal').modal("hide");
+         				$("#popuptitle").html("Unable to Register Account");
+         				$("#popuptext").html("There is a problem with your E-mail Address, please try again later.");
+						$("#footercontent").html('<button data-dismiss="modal" class="btn btn-info pull-right">OK</button>');
+         				$('#errormodal').modal('show');
+						});
+					}
+				}
+	  </script>
+   </body>
+</html>

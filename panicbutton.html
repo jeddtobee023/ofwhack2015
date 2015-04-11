@@ -48,25 +48,70 @@
 		<div id="panicloading" style="display:none"><svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
 		   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30" style="stroke:#fff"></circle>
 		</svg></div>
-		<!--<svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
-		   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-		</svg>-->
 		</div><!--center-block-->
 		</div><!--container-fluid-->
       <script src="js/jquery-1.11.2.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
 	  <script src="js/fastclick.min.js"></script>
 	  <script>
-	    $(function()
+	    var panicDown;
+		var lat = 0;
+		var lng = 0;
+		$(function()
 		{
 		//$("body").removeClass("bg-info").addClass("bg-danger");
+		getLocation();
 		});
-		var panicDown;
+				
+		function getLocation()
+		{
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position){
+					lat = position.coords.latitude;
+					lng = position.coords.longitude;
+					georesponse = 1;
+				});
+			}
+			else
+			{
+				georesponse = 0;
+			}
+		}
+		
+		function donePanic()
+		{
+			$("body").removeClass("bg-danger").addClass("bg-info"); 
+			$("#panicinstruction").slideDown("fast");
+			$("#panicloading").slideUp("fast");
+		}
+		
 		$('#panicbutton').on("mousedown touchstart",function() {
 		  panicDown = setTimeout(function() {
 			$("body").removeClass("bg-info").addClass("bg-danger"); 
 			$("#panicinstruction").slideUp("fast");
 			$("#panicloading").slideDown("fast");
+			$('#panicbutton').unbind("mousedown touchstart");
+			getLocation();
+			setTimeout(function(){
+				if (georesponse == 1)
+				{
+					$.getJSON("http://imhome.iligtas.ph/panicbuttonpressed.php", {uniquekey: localStorage.getItem("imhome-uniquekey"),lat:lat,lng:lng},function(data)
+					{
+						$("#panicinstruction").html('Panic Call has been sucessfully sent to your Trackers.');
+						donePanic();
+					});
+				}
+				else
+				{
+					$("#panicinstruction").html('<h2>There\'s an error getting your location.<br>Make sure Location Services are on.</h2>');
+					donePanic();
+				}			
+			},1000);
+			//$("body").trigger("transitionandroid",["home.html","down"]);
+			/*$.getJSON("http://imhome.iligtas.ph/checklogin.php", {note:3},function(data)
+         		{
+				
+				});*/
 		  }, 2000);
 		});
 		$('#panicbutton').on("mouseup touchend",function() {

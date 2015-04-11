@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.gcccs.org.ohack" version="1.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.gcccs.org.imhome" version="1.0">
 
-	<name>OFW Hack 2015</name>
-	<description>Test App</description>
+	<name>I'M HOME</name>
+	<description>Entry - Global Pinoy Hackathon 2015</description>
 	<author>Team GC-CCS</author>
 	<gap:platforms>
 		<gap:platform name="android" />

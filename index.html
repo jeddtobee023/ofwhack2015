@@ -5,161 +5,48 @@
       <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" >
       <meta charset="utf-8">
       <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
-	  <link rel="stylesheet" href="css/font-awesome.min.css">
 	  <link rel="stylesheet" href="css/animate.min.css">
       <style>
 		body
 		{
-		background: #d3d3d3;
-		padding-top:125px;
-		padding-bottom: 50px;
+		padding-top:55px;
+		display:none;
 		}
-         .navbar
+        .animated
 		 {
-		 -webkit-transition: all ease-in-out 0.25s;
-		 transition: all ease-in-out 0.25s;
-		 }
-		 .navbar-fixed-top .row
-		 {
-		 margin:0;
-		 padding:0;
-		 }
-		 .menu-top
-		 {
-		 padding:0;
-		 padding-top:10px;
-		 background:#333;
-		 }
-		 .menu-top .col-xs-3
-		 {
-		 padding:0;
-		 padding-bottom:5px;
-		 color:#b4bcc2;
-		 text-decoration: none;
-		 text-align: center;
-		 font-size: 0.9em
-		 }
-		 .menu-top .active
-		 {
-		 border-bottom: 5px solid #3498db;
-		 color: #f3f3f3;
-		 }
-		 .animated
-		 {
-		 -webkit-animation-duration: 0.55s;
-		 animation-duration: 0.55s;
-		 }
-		 .list-group-notifications .list-group-item
-		 {
-		 border-left: 0;
-		 border-right: 0;
-		 border-radius:0;
+		 -webkit-animation-duration: 0.5s;
+		 animation-duration: 0.5s;
 		 }
       </style>
    </head>
-   <body>
-		<div class="navbar navbar-fixed-top" style="background: #f3f3f3;color:#333">
-			<div class="container-fluid" style="padding: 10px;">
-				<div class="row">
-				  <div class="col-xs-6" style="padding:0">
-				  <img src="images/ihlogo-alt.png" style="width:42px">
-				  </div>
-				  <div class="col-xs-6 text-right" style="padding:0">
-				  <h4><span class="glyphicon glyphicon-option-vertical"></span></h4>
-				  </div>
-				</div>
-			</div>
-			<div class="container-fluid menu-top">
-				<div class="row">
-				  <a href="" class="col-xs-3 active">
-				  <i class="fa fa-th-large fa-lg fa-fw"></i><br>Notifications
-				  </a>
-				  <div class="col-xs-3">
-				  <i class="fa fa-star fa-lg fa-fw"></i><br>Featured
-				  </div>
-				  <div class="col-xs-3">
-				  <i class="fa fa-bar-chart fa-lg fa-fw"></i><br>Trending
-				  </div>
-				  <div class="col-xs-3">
-				  <i class="fa fa-trophy fa-lg fa-fw"></i><br>All Time
-				  </div>
-				</div>
-			</div>
-		</div>
-		<div style="background: transparent;padding:0;position:fixed;right:0;top:80%;z-index:1030;padding-right: 5px">
-		<a href="panicbutton.html" class="fa-stack fa-2x img-circle btn-up"style="background:#333;-webkit-box-shadow:0px 0px 2px 2px rgba(0,0,0,0.8);box-shadow:0px 0px 2px 2px rgba(0,0,0,0.8)">
-		  <i class="fa fa-stack-2x img-circle"></i>
-		  <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
-		</a>
-		</div>
-		
-		<div class="container" style="padding-left:0;padding-right:0;">
-		<div class="center-block" style="max-width:700px;">
-		<div class="list-group list-group-notifications">
-		
-		<div class="list-group-item list-group-item-danger">
-			<span class="label label-default pull-right">2 minutes ago</span>
-			<span class="fa-stack fa-3x pull-left">
-			  <i class="fa fa-circle fa-stack-2x" style="color: #333"></i>
-			  <i class="fa fa-flag fa-stack-1x fa-inverse"></i>
-			</span>
-			<h3>Amy needs Emergency!</h3>
-			Amy pushed the Panic Button
-			<span class="clearfix"></span>
-		</div>
-		<div class="list-group-item list-group-item-success">
-			<span class="label label-default pull-right">1 hour ago</span>
-			<span class="fa-stack fa-3x pull-left">
-			  <i class="fa fa-circle fa-stack-2x" style="color: #333"></i>
-			  <i class="fa fa-user-times fa-stack-1x fa-inverse"></i>
-			</span>
-			<h3>Jonathan's Location</h3>
-			It seems Jonathan is outside the school premises today.
-			<span class="clearfix"></span>
-		</div>
-		<div class="list-group-item list-group-item-warning">
-			<span class="label label-default pull-right">2 hours ago</span>
-			<span class="fa-stack fa-3x pull-left">
-			  <i class="fa fa-circle fa-stack-2x" style="color: #333"></i>
-			  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
-			</span>
-			<h3>New Message</h3>
-			From: Mama - Dad, When will you come home? We will having...
-			<span class="clearfix"></span>
-		</div>
-		<div class="list-group-item  list-group-item-success" style="background: #333">
-			<span class="label label-default pull-right">Reminder</span>
-			<a href="" class="fa-stack fa-3x pull-left btn-forward">
-			  <i class="fa fa-circle fa-stack-2x text-danger"></i>
-			  <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
-			</a>
-			<h3>Reginald's Birthday Today!</h3>
-			Call or Message Reginald now.
-			<span class="clearfix"></span>
-		</div>
-		<div class="list-group-item list-group-item-danger">
-			<button id="testNoti" class="btn btn-info btn-lg btn-block">Test Notification</button>
-		</div>
-		
-		</div>
-		</div><!--center-block-->
-		</div><!--container-fluid-->
-		
+   <body class="bg-info">
 		<div class="container">
 		<div class="center-block" style="max-width:700px;">
-		<a href="test2.html" class="btn btn-info btn-forward">Next Page</a>
-		<svg class="spinner center-block" width="65px" height="65px" viewBox="0 0 66 66">
-		   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-		</svg>
+		<div class="center-block" style="max-width:420px;padding:20px"><img src="images/ihlogo-large.png" style="width:100%"><br><br><img src="images/ihlogo-text.png" style="width:100%"></div>
 		</div><!--center-block-->
 		</div><!--container-fluid-->
+		
       <script src="js/jquery-1.11.2.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
 	  <script src="js/fastclick.min.js"></script>
 	  <script>
-	  $("#testNoti").click(function(){
-		alert("If you see this, either there's an error or notifications hasn't been loaded");
-		});
+	  $(function()
+	  {
+	  $("body").fadeIn("fast");
+	  setTimeout(function()
+	  {
+			if(localStorage.getItem("imhome-email") == null || localStorage.getItem("imhome-email") == undefined)
+			{
+				$("body").trigger("transitionandroid",["login.html","up"]);
+				return;
+			}
+			else
+			{
+				$("body").trigger("transitionandroid",["home.html","up"]);
+				return;
+			}
+	  },1000);
+	  });
 	  </script>
    </body>
 </html>

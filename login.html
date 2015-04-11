@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>OFW Hack 2015</title>
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" >
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+	  <link rel="stylesheet" href="css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/animate.min.css">
+      <style>
+		body
+		{
+		padding-top:125px;
+		-webkit-transition: background 0.5s ease-in-out;
+		transition: background 0.5s ease-in-out;
+		display:none;
+		padding-bottom: 50px
+		}
+        .animated
+		 {
+		 -webkit-animation-duration: 0.5s;
+		 animation-duration: 0.5s;
+		 }
+      </style>
+   </head>
+   <body class="bg-info">
+		<div class="container">
+		<div class="center-block" style="max-width:700px;">
+		<div class="center-block" style="max-width:420px;padding:20px"><img src="images/ihlogo-text.png" style="width:100%"></div>
+		<div class="panel panel-default">
+		  <div class="panel-body">
+			<form id="loginform" action="javascript:verifylogin()">
+			<div class="input-group"  style="margin-bottom:2px;">
+				<span class="input-group-addon"><i class="fa fa-envelope fa-lg fa-fw"></i></span>
+				<input type="text" class="form-control" name="email" id="lemail" placeholder="Email">
+			</div>
+			<div class="input-group" style="margin-bottom:10px;">
+				<span class="input-group-addon"><i class="fa fa-lock fa-lg fa-fw"></i></span>
+				<input type="password" class="form-control" name="pass" id="lpass" placeholder="Password" >
+			</div>
+			<input type="submit" value="Log In" id="btnLogin" class="btn btn-warning btn-block">
+			</form>
+		  </div>
+		</div>
+		<a href="register.html" class="btn btn-primary btn-block btn-forward" style="margin-bottom:5px"><i class="fa fa-pencil fa-lg fa-fw"></i>&nbsp;Register for I'M HOME Account</a>
+		</div><!--center-block-->
+		</div><!--container-fluid-->
+		
+		<!--- Error Modal Start -->
+      <div class="modal fade" id="errormodal" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog modal-vertical-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4 id="popuptitle" class="modal-title"></h4>
+               </div>
+               <div class="modal-body">
+                  <p id="popuptext"></p>
+				  <div id="footercontent"></div>
+				  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--- Error Modal End -->
+		
+      <script src="js/jquery-1.11.2.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+	  <script src="js/fastclick.min.js"></script>
+	  <script>
+	$(function()
+	  {
+	  $("body").fadeIn("fast");
+	  });
+	  
+	var lform = $("#loginform");
+	function verifylogin()
+	{
+		if($( "#lemail" ).val() == "" || $( "#lpass" ).val() == "")
+		{
+        return;
+        }
+		$('#loadingmodal').modal({backdrop: "static",keyboard: false},'show');
+		$.getJSON("http://imhome.iligtas.ph/checklogin.php", lform.serialize(),function(data)
+         		{
+						if (data.verificationcode == "pe")
+         				{
+         				localStorage.setItem("imhome-email", data.email);
+						localStorage.setItem("imhome-uniquekey", data.uniquekey);
+						$("body").trigger("transitionandroid",["home.html","up"]);
+         				$('#loadingmodal').modal("hide");
+         				}
+         				else
+         				{
+         				$('#loadingmodal').modal("hide");
+         				$("#popuptitle").html("Unable to Login");
+         				$("#popuptext").html("The account you've entered is not associated with I'M HOME. Please check your username or password.");
+						$("#footercontent").html('<button data-dismiss="modal" class="btn btn-info pull-right">OK</button>');
+         				$('#errormodal').modal('show');
+         				}
+				}).fail(function(data){
+         				$('#loadingmodal').modal("hide");
+         				$("#popuptitle").html("Unable to Login");
+         				$("#popuptext").html("There is a problem with your login, please try again later.");						
+						$("#footercontent").html('<button data-dismiss="modal" class="btn btn-info pull-right">OK</button>');
+         				$('#errormodal').modal('show');
+         			});
+	}
+	  </script>
+   </body>
+</html>
