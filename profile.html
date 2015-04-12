@@ -47,7 +47,7 @@
 		 }
       </style>
    </head>
-   <body>
+   <body class="bg-success">
 		<div class="navbar navbar-fixed-top" style="background: #f3f3f3;color:#333">
 			<div class="container-fluid" style="padding: 10px;">
 				<div class="row">
@@ -55,7 +55,7 @@
 				  <img src="images/ihlogo-alt.png" style="width:42px">
 				  </div>
 				  <div class="col-xs-6 text-right" style="padding:0">
-				  <h4><i class="fa fa-refresh fa-lg"></i></h4>
+				  <!--<h4><i class="fa fa-refresh fa-lg"></i></h4>-->
 				  </div>
 				</div>
 			</div>
@@ -85,7 +85,22 @@
 		
 		<div class="container">
 		<div class="center-block" style="max-width:700px;">
-				<button id="btnlogout" class="btn btn-default btn-block"><i class="fa fa-lock fa-fw"></i>Log-out</button>
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  <div class="row">
+					  <div class="col-xs-5" id="picturecont">
+							<div class="img-circle center-block" style="width:120px;height:120px;background: url('images/dp.png') center center; background-size: cover; -webkit-background-size: cover;padding-right: 10px"></div>
+					  </div>
+					  <div class="col-xs-7">
+							<h3 id="palias">Jedd Ninonuevo</h3>
+							<span id="pemail"><b>jedd.pascual023@gmail.com</b></span><br><br>
+							<div id="puniquekey" class="label label-default" style="font-size: 1.2em;line-height:0"></div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				<button id="btnchangepicture" class="btn btn-primary btn-block"><i class="fa fa-image fa-fw"></i> Change Profile Picture</button>
+				<button id="btnlogout" class="btn btn-danger btn-block"><i class="fa fa-lock fa-fw"></i> Remove Account</button>
 		</div><!--center-block-->
 		</div><!--container-fluid-->
 		
@@ -113,12 +128,20 @@
 	  $(function()
 	  {
 	   $("body").fadeIn("fast");
+	   $("#palias").html(localStorage.getItem("imhome-alias"));
+	   $("#pemail").html(localStorage.getItem("imhome-email"));
+	   $("#puniquekey").html(localStorage.getItem("imhome-uniquekey"));
+	   if (localStorage.getItem("imhome-pp") != undefined || localStorage.getItem("imhome-pp") != null)
+	   {
+	    $("#picturecont").html('<div class="img-circle" style="width:120px;height:120px;background:url(\''+localStorage.getItem("imhome-pp")+'\') center center; background-size: cover; -webkit-background-size: cover;padding-right: 10px"></div>');
+	   }
 	  });
 	  $("#btnlogout").click(function()
 	  {
 	  localStorage.removeItem("imhome-email");
 	  localStorage.removeItem("imhome-uniquekey");
 	  localStorage.removeItem("imhome-lastnotidate");
+	  localStorage.removeItem("imhome-alias");
 	  $("body").trigger("transitionandroid",["login.html","down"]);
 	  });
 	  </script>
