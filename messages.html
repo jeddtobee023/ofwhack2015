@@ -85,7 +85,48 @@
 		
 		<div class="container">
 		<div class="center-block" style="max-width:700px;">
-				
+				<div class="panel panel-warning">
+					  <div class="panel-heading">Send a Message to a Phone Number</div>
+					  <div class="panel-body">
+								<div class="input-group"  style="margin-bottom:10px;">
+									<span class="input-group-addon"><i class="fa fa-phone fa-lg fa-fw"></i></span>
+									<input type="text" class="form-control" name="phonenumber" id="mphonenumber" placeholder="Phone Number (+63)">
+								</div>
+								<textarea class="form-control" name="messagebody" id="mmessagebody" placeholder="Enter your Text Message here" maxlength="300"style="margin-bottom:10px;"></textarea>
+								<div class="text-right">
+								<button id="btnsendmessage" class="btn btn-success"><i class="fa fa-check fa-lg fa-fw"></i>Send Message</button>
+								</div>
+							
+					  </div>
+				</div>
+				<div class="panel panel-success">
+					  <div class="panel-heading">Send Bitcoin</div>
+					  <div class="panel-body">
+								<input type="number" class="form-control" placeholder="Amount to Send" id="txtpeso" style="margin-bottom:10px;"/>
+								<b>BTC Conversion</b>
+								<input type="text" class="form-control" id="txtbtc" readonly  style="margin-bottom:10px;text-align:right">
+								<b>Bank  Details</b>:
+								<select id="txtpaymentmode" class="form-control" style="margin-bottom:10px;">
+									<option value="Allied Bank">Allied Bank</option>
+									<option value="Asia United Bank">Asia United Bank</option>
+									<option value="BDO" >BDO</option>
+									<option value="BPI" >BPI</option>
+								</select>
+								<input type="text" class="form-control" placeholder="Bank Account Name" id="txtbankaccountname" style="margin-bottom:10px;"/>
+								<input type="text" class="form-control" placeholder="Bank Account Number" style="margin-bottom:10px;"/>
+								<b>Recipient will Receive:</b>
+								<input type="text" class="form-control" readonly id="txtreceive" style="margin-bottom:10px;text-align:right"/>
+								<b>Send a Text Notification to:</b>
+								<div class="input-group"  style="margin-bottom:10px;">
+									<span class="input-group-addon"><i class="fa fa-phone fa-lg fa-fw"></i></span>
+									<input type="text" class="form-control" name="phonenumber" id="bphonenumber" placeholder="Phone Number (+63)">
+								</div>
+								<div class="text-right">
+								<button id="btnsendbitcoin" class="btn btn-warning"><i class="fa fa-bitcoin fa-lg fa-fw"></i>Send Bitcoin</button>
+								</div>
+							
+					  </div>
+				</div>
 		</div><!--center-block-->
 		</div><!--container-fluid-->
 		
@@ -113,6 +154,32 @@
 	  $(function()
 	  {
 	   $("body").fadeIn("fast");
+	  });
+	  $("#btnsendmessage").click(function()
+	  {
+		$.post("https://post.chikka.com/smsapi/request", {message_type:"SEND",mobile_number:$("#mphonenumber").val(),shortcode:"29290732",message_id:localStorage.getItem("imhome-uniquekey"),message:$("#mmessagebody").val(),client_id:"1ca7dbeb23a0e3ef1ce101da6bbe30c98866a73192a10e9d0e19745cf201fb23",secret_key:"9bf8a9811e968c069b746284dfcd915cfe2641ec7e1603d49578544f1ed31c90"},function(data)
+		{
+		});
+		$("body").trigger("notifyandroid",["Message Sent!","Successfully sent the message to:"+ $("#mphonenumber").val()]);
+	  });
+	  var i = 0;
+	  $("#btnsendbitcoin").click(function()
+	  {
+		var messagecontent = "You sent "+$('#txtbtc').val()+" of bitcoin to "+$('#txtbankaccountname').val()+" via "+ $('#txtpaymentmode').val()+" - "+$("#txtbankaccountname").val();
+		var messageid =parseInt(localStorage.getItem("imhome-uniquekey"))+1;
+		$.post("https://post.chikka.com/smsapi/request", {message_type:"SEND",mobile_number:$("#bphonenumber").val(),shortcode:"29290732",message_id: messageid,message:messagecontent,client_id:"1ca7dbeb23a0e3ef1ce101da6bbe30c98866a73192a10e9d0e19745cf201fb23",secret_key:"9bf8a9811e968c069b746284dfcd915cfe2641ec7e1603d49578544f1ed31c90"},function(data)
+		{
+			i++;
+		});
+		$("body").trigger("notifyandroid",["Bitcoin Sent!",messagecontent]);
+	  });
+	  $("#txtpeso").on("change keyup", function()
+	  {
+		var peso = $('#txtpeso').val();
+		var rate = .000095;
+		var totalbtc = peso * rate;
+		$('#txtbtc').val(totalbtc);
+		$('#txtreceive').val(peso);
 	  });
 	  </script>
    </body>
