@@ -168,7 +168,7 @@
 		$('#loadingmodal').modal("hide");
 		$("#popuptitle").html("Message Sent!");
         $("#popuptext").html("Sucessfully sent the message to: "+ $("#mphonenumber").val());
-		$("#footercontent").html('<a href="tracklist.html" class="btn btn-info tab-btn pull-right">OK</a>');
+		$("#footercontent").html('<a href="messages.html" class="btn btn-info tab-btn pull-right">OK</a>');
         $('#errormodal').modal({backdrop: "static",keyboard: false},'show');
 	  });
 	  var i = getRandomInt(1, 1000);
@@ -176,7 +176,7 @@
 	  {
 		$('#loadingmodal').modal({backdrop: "static",keyboard: false},'show');
 		var messagecontent = "You sent "+$('#txtbtc').val()+" of bitcoin to "+$('#txtbankaccountname').val()+" via "+ $('#txtpaymentmode').val()+" - "+$("#txtbankaccountname").val();
-		var messageid =parseInt(localStorage.getItem("imhome-uniquekey"))+1;
+		var messageid =parseInt(localStorage.getItem("imhome-uniquekey"))+i;
 		$.post("https://post.chikka.com/smsapi/request", {message_type:"SEND",mobile_number:$("#bphonenumber").val(),shortcode:"29290732",message_id: messageid,message:messagecontent,client_id:"1ca7dbeb23a0e3ef1ce101da6bbe30c98866a73192a10e9d0e19745cf201fb23",secret_key:"9bf8a9811e968c069b746284dfcd915cfe2641ec7e1603d49578544f1ed31c90"},function(data)
 		{
 		});
