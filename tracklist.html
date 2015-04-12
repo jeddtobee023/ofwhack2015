@@ -136,6 +136,13 @@
 							</div>
 					  </div>
 				</div>
+				<div class="panel panel-primary" style="padding-bottom:0;">
+					  <div class="panel-heading">View your Tracks:</div>
+					  <div id="tracklistgroup" class="panel-body" style="padding:0">
+						<iframe id="trackview" style="width: 100%;min-height:300px;border:0;margin:0;"></iframe>
+							
+					  </div>
+				</div>
 		</div><!--center-block-->
 		</div><!--container-fluid-->
 		
@@ -160,6 +167,7 @@
       <script src="js/bootstrap.min.js"></script>
 	  <script src="js/fastclick.min.js"></script>
 	  <script>
+	  
 	  $(function()
 	  {
 	  $("#txtbyuniquekey").val(localStorage.getItem("imhome-uniquekey"));
@@ -177,6 +185,10 @@
 					$("#tracklistloader").remove();
 					$("#tracklistgroup").append('<div class="list-group-item text-center">Unable to load the Tracklist.</div>');
 				});
+			$.get("betongtrack.html",function(data)
+			{
+				$("#trackview").attr("src","betongtrack.html");
+			});
 	  },500);
 	  });
 	  

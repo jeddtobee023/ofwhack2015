@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=7; IE=EmulateIE9; IE=10" />
+		
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<title>HERE Maps API for JavaScript Example: Tracking a moving map object</title>
+		<meta name="description" content="Tracking an animated map object entering and leaving a geoshape"/>
+		<meta name="keywords" content="tracking, demos"/>
+		<!-- For scaling content for mobile devices, setting the viewport to the width of the device-->
+		<meta name=viewport content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<!-- Styling for example container (NoteContainer & Logger)  -->
+		<link rel="stylesheet" type="text/css" href="http://apidocs-legacy-documentations3bucket.s3-website-eu-west-1.amazonaws.com/apiexplorer/examples/templates/js/exampleHelpers.css"/>
+		<!-- By default we add ?with=all to load every package available,
+			it's better to change this parameter to your use case. 
+			Options ?with=maps|positioning|places|placesdata|directions|datarendering|all -->
+		<script type="text/javascript" charset="UTF-8" src="http://js.cit.api.here.com/se/2.5.4/jsl.js?with=all"></script>
+		<!-- JavaScript for example container (NoteContainer & Logger)  -->
+		<script type="text/javascript" charset="UTF-8" src="http://apidocs-legacy-documentations3bucket.s3-website-eu-west-1.amazonaws.com/apiexplorer/examples/templates/js/exampleHelpers.js"></script>
+		<style type="text/css">
+			html {
+				overflow:hidden;
+			}
+			
+			body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+			
+			#mapContainer {
+				width: 100%;
+				height: 100%;
+				left: 0;
+				top: 0;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="mapContainer"></div>
+		<div id="uiContainer" style="display:none"></div>
+		<script src="js/jquery-1.11.2.min.js"></script>
+		<script>
+		$(function() {
+		$.ajaxSetup({
+		  cache: false,
+		  timeout: 15000
+		});
+		});
+		$.getScript("phonegap.js",function(){
+			$(document).on('deviceready',function(){
+				
+				$("body").unbind("notifyandroid").on("notifyandroid",function(event, title, message){
+					cordova.plugins.notification.local.schedule({title: title,message: message});
+				});
+				
+			});
+		});
+		</script>
+		<script type="text/javascript" id="exampleJsSource">
+/*	Setup authentication app_id and app_code 
+*	WARNING: this is a demo-only key
+*	please register for an Evaluation, Base or Commercial key for use in your app.
+*	Just visit http://developer.here.com/get-started for more details. Thank you!
+*/
+nokia.Settings.set("app_id", "DemoAppId01082013GAL"); 
+nokia.Settings.set("app_code", "AJKnXv84fjrb0KIHawS0Tg");
+// Use staging environment (remove the line for production environment)
+nokia.Settings.set("serviceMode", "cit");
+
+// Get the DOM node to which we will append the map
+var mapContainer = document.getElementById("mapContainer");
+// Create a map inside the map container DOM node
+var map = new nokia.maps.map.Display(mapContainer, {
+	// Initial center and zoom level of the map
+	center: [14.574729,121.042876],
+	zoomLevel: 8
+});
+
+/* We create a UI notecontainer for example description and controls
+ * NoteContainer is a UI helper function and not part of the Maps API for JavaScript
+ * See exampleHelpers.js for implementation details 
+ */
+ var noteContainer = new NoteContainer({
+	id: "trackingUi",
+	parent: document.getElementById("uiContainer"),
+	title: "Tracking a moving map object example",
+	content:
+		'<p>This example shows how you can track on object entering and leaving a predefined zone by a polygon.</p>' +
+		'<input id="animate" role="button" type="button" value="animate object"/><br />'
+});
+
+/* We create a new UI Loggger to display log messages
+ * Logger is a UI helper function and not part of the Maps API for JavaScript
+ * See exampleHelpers.js for implementation details 
+ */
+var mapObjectLogger = new Logger({
+	id: "mapObjectLogger",
+	parent: document.getElementById("uiContainer"),
+	title: "Map object log"
+});
+
+// We bind DOM element to variable so we use it later to install event handler.
+var animateUiElt = document.getElementById("animate");
+
+// Longitude & latitude coordinates array we will use to create an route further one 
+var routeArr = [
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+14.574224,121.041957,
+
+14.574282,121.041997,
+14.574282,121.041997,
+
+14.574323,121.042025,
+14.574323,121.042025,
+
+14.574365,121.04205,
+14.574365,121.04205,
+
+14.574406,121.042076,
+14.574406,121.042076,
+
+14.574448,121.042101,
+14.574448,121.042101,
+
+14.574489,121.042127,
+14.574489,121.042127,
+
+14.574531,121.042152,
+14.574531,121.042152,
+
+14.574572,121.042178,
+14.574572,121.042178,
+
+14.574614,121.042203,
+14.574614,121.042203,
+
+14.574667,121.042236,
+14.574667,121.042236,
+
+14.57472,121.042268,
+14.57472,121.042268,
+
+14.574773,121.0423,
+14.574773,121.0423,
+
+14.574827,121.042332,
+14.574827,121.042332,
+
+14.574885,121.042355,
+14.574885,121.042355,
+
+14.574932,121.04238,
+14.574932,121.04238,
+
+14.574981,121.042406,
+14.574981,121.042406,
+
+14.575029,121.042431,
+14.575029,121.042431,
+
+14.575015,121.042466,
+14.575015,121.042466,
+
+14.575001,121.042501,
+14.575001,121.042501,
+
+14.574992,121.042524,
+14.574992,121.042524,
+
+14.574982,121.042547,
+14.574982,121.042547,
+
+14.574973,121.04257,
+14.574973,121.04257,
+
+14.574964,121.042592,
+14.574964,121.042592,
+
+14.574949,121.042615,
+14.574949,121.042615,
+
+14.574924,121.042635,
+14.574924,121.042635,
+
+14.574899,121.042655,
+14.574899,121.042655,
+
+14.574875,121.042675,
+14.574875,121.042675,
+
+14.57485,121.042696,
+14.57485,121.042696,
+
+14.574832,121.042721,
+14.574832,121.042721,
+
+14.574803,121.042751,
+14.574803,121.042751,
+
+14.574784,121.042776,
+14.574784,121.042776,
+
+14.574768,121.0428,
+14.574753,121.042824,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881,
+14.574724,121.042881
+];
+
+// We create a polygon route, marker and a circle 
+var route = new nokia.maps.map.Polyline(
+		new nokia.maps.geo.Strip(
+			routeArr, 
+			"values lat lng"),
+		{ color: "#00F6", width: 2 }
+	),
+	imageMarker = new nokia.maps.map.Marker(
+		route.path.get(0),
+		{
+			icon: "http://iligtas.ph/imhome/images/pic.png", 
+			$id: "marker", 
+			anchor: {x: 50, y: 110}
+		}
+	),
+	circle = new nokia.maps.map.Circle(
+		map.center, 
+		10,
+		{
+			fillColor: "#F004", 
+			width: 0,
+			$id: "fence"
+		}
+	),
+	// Add all 3 of the created objects into one container for easier management
+	sceneContainer = new nokia.maps.map.Container([route, imageMarker, circle]);
+
+/* Once the map is initialized and ready (an event that is fired only once),
+ * add the above container to the map, and zoom in, 
+ * in such a way that the route is fully visible with the browser's window.
+ */
+map.addListener("displayready", function () {
+	map.objects.add(sceneContainer);
+	map.zoomTo(sceneContainer.getBoundingBox());
+});
+
+var Walker = function (marker, path) {
+	this.path = path;
+	this.marker = marker;
+	this.idx = 0;
+	this.dir = -1;
+	this.isWalking = false;
+	var that = this;
+	this.walk = function () {
+		// Get the next coordinate from the route and set the marker to this coordinate
+		var coord = path.get(that.idx);
+		
+		marker.set("coordinate", coord);
+		
+		// Force immediate re-render of the map display
+		map.update(-1, true);
+		
+		// If we get to the end of the route reverse direction
+		if (!that.idx || that.idx === path.getLength() - 1) {
+			that.dir *= -1;
+		}
+		
+		that.idx += that.dir;
+		
+		/* Recursively call this function with time that depends on the distance to the next point
+		 * which makes the marker move in similar random fashion
+		 */
+		that.timeout = setTimeout(that.walk, Math.round(coord.distance(path.get(that.idx)) * 2.5));
+		that.isWalking = true;
+	};
+	
+	this.stop = function () {
+		clearTimeout(that.timeout);
+		this.isWalking = false;
+	};
+};
+
+// Create GeoFence of the circle which will observe marker.
+var Geofence = function (fence, markers) {
+	var i = markers.length;
+	this.fence = fence;
+	this.covers = {};
+	
+	/* For every given marker we add an observer on it's coordinate property
+	 * e.g if a marker's coordinate changes then GeoFence's observer function is called
+	 */
+	while (i--) markers[i].addObserver("coordinate", this.observer, this);
+};
+Geofence.prototype.observer = function (obj, key, val) {
+	// To see if object is within our fence we need to convert the objects geoCoordinate to screen map pixels
+	var scrCoord = map.geoToPixel(val),
+		fenceId = this.fence.$id,
+		objId = obj.$id,
+		objects = map.getObjectsAt(scrCoord.x, scrCoord.y),
+		covers = false;
+	
+	/* Using getObjectsAt() we get all map objects at given map position in pixels
+	 * and then we see if the object is within our fence
+	 */
+	for (var object in objects) {
+		if (objects[object] === this.fence) {
+			covers = true;
+			break;
+		}
+	}
+	
+	if (covers !== this.covers[objId]) {
+		if (this.covers[objId] !== undefined) {
+			this.fence.set("fillColor", covers ? "#0F04" : "#F004");
+			covers ? mapObjectLogger.log(objId + " has entered " + fenceId) : mapObjectLogger.log(objId + " has left " + fenceId);
+			if (covers)
+			{
+			$.getJSON("http://imhome.iligtas.ph/locationdetected.php", {uniquekey: 20102010,lat:1,lng:1},function(data)
+					{
+						$("body").trigger("notifyandroid",[data.alias+"'s Location",data.alias+" is at home now."]);
+				});
+			}
+		}
+		this.covers[objId] = covers;
+	} else if (covers) {
+		// Observed object is within defined fence
+		mapObjectLogger.log(objId + " is within " + fenceId);
+		
+	}
+};
+
+// We create GeoFence of the circle which will observe marker.
+var fence = new Geofence(circle, [imageMarker]),
+	// Constructs Walk object which makes given marker walk along provided path
+	walker = new Walker(imageMarker, route.path);
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+	setTimeout(function(){walker.walk();},1000);
+	/*if (walker.isWalking) {
+		animateUiElt.value = "animate object";
+		walker.stop();
+	} else {
+		animateUiElt.value = "stop animating object";
+		walker.walk();
+	}*/
+});
+
+		</script>
+	</body>
+</html>

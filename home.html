@@ -169,6 +169,10 @@
 					{
 					$(".list-group-notifications").prepend('<div class="list-group-item list-group-item-danger" style="display:none"><abbr class="label label-default pull-right timeago" title="'+value['notidate']+'">'+value['notidate']+'</abbr><span class="fa-stack fa-3x pull-left"><i class="fa fa-circle fa-stack-2x" style="color: #333"></i><i class="fa fa-flag fa-stack-1x fa-inverse"></i></span><h3>'+value['alias']+' buzzed!</h3>'+value['alias']+' pressed the Panic Button<span class="clearfix"></span></div>');
 					}
+					if (value['type'] == "aloc")
+					{
+					$(".list-group-notifications").prepend('<div class="list-group-item list-group-item-success" style="display:none"><abbr class="label label-default pull-right timeago" title="'+value['notidate']+'">'+value['notidate']+'</abbr><span class="fa-stack fa-3x pull-left"><i class="fa fa-circle fa-stack-2x" style="color: #333"></i><i class="fa fa-map-marker fa-stack-1x fa-inverse"></i></span><h3>'+value['alias']+'\'s Location</h3>'+value['alias']+' is at home now.<span class="clearfix"></span></div>');
+					}
 					if (key >= data.length - 1)
 					{
 					 localStorage.setItem("imhome-lastnotidate",value['notidate']);
